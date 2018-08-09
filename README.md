@@ -1,7 +1,9 @@
-#include "Msg.h"
-#include "Tools.h"
-#include "SerialEvent.h"
-#include "InfraRedData.h"
+<body>
+<h4>How it works </h4>
+<p>#include "Msg.h"</p>
+<p>#include "Tools.h"</p>
+<p>#include "SerialEvent.h"</p>
+<p>#include "InfraRedData.h"</p>
 
 // the setup function runs once when you press reset or power the board
 
@@ -24,3 +26,7 @@ void loop() {
 		InfraRedData.sendMsg(msg.c_str(), 1U);
 	}
 }
+
+
+
+</body>
