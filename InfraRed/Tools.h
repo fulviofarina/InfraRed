@@ -1,4 +1,3 @@
-// Tools.h
 
 #ifndef _TOOLS_h
 #define _TOOLS_h
@@ -9,9 +8,9 @@
 #include "WProgram.h"
 #endif
 
-#define enter  '\n'
-#define dot  '.'
-#define space  ' '
+#define ENTER  '\n'
+#define DOT  '.'
+#define SPACE  ' '
 
 #define sep  " = "
 

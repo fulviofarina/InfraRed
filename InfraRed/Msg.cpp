@@ -1,6 +1,3 @@
-//
-//
-//
 
 #include "Msg.h"
 #include "AlphaBeta.h"
@@ -8,7 +5,7 @@
 bool Message::_checkTimeOut(unsigned int timeOut)
 {
 	unsigned int diff = (micros() - LastTime);
-	bool timeout = (diff > timeOut);
+	bool timeout = (diff >= timeOut);
 	return timeout;
 }
 void Message::_cleanMsg()
@@ -25,18 +22,18 @@ void Message::_cleanPkg()
 String Message::protocolize(const char *Send, char split)
 {
 	String toSend = Send;
+
 	String finaltxt = "";
-	//finaltxt = ""; //this is the final string
+
 	finaltxt += split; //put the header (k) first
 
-					   //split the code-message in gagaga or gagbgc, etc mini-messages
+	 //split the code-message in gagaga or gagbgc, etc mini-messages
 	for (int u = 0; u < toSend.length(); u++)
 	{
 		finaltxt += toSend[u];
-		if (u != (toSend.length() - 1)) finaltxt += split;
+		int length = toSend.length() - 1;
+		if (u != length) finaltxt += split;
 	}
-	//if (finaltxt.length() == 0) Serial.print("empty2");
-	//Serial.print(finaltxt);
 	toSend = "";
 
 	return finaltxt.c_str();

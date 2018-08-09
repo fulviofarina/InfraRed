@@ -1,9 +1,11 @@
 #include "Pulse.h"
 
+
+
 void Pulse::readIntensity(uint8_t pin, uint8_t cnt)
 {
+	//for averaging the background, last n values
 	if (n == cnt)
-		//for averaging the background, last 9 values
 	{
 		fluxCum = 0;
 		fluxAVG = 0;
@@ -16,36 +18,34 @@ void Pulse::readIntensity(uint8_t pin, uint8_t cnt)
 	fluxCum += Val; //add to total
 	fluxAVG = (fluxCum / n); //take average
 	n++;
-
 	flux = Val;
 }
 
 double Pulse::calculateFrequency()
 {
-	return 1e3 / tau;
+	return THOUS_CONV / tau;
 }
 ///In microseconds
 double Pulse::calculatePeriod()
 {
-	//	double aux = 0;
-	return (end - start) * 2;
-}
-bool Pulse::checkPulse(uint8_t pin, int BkgLimit)
-{
-	readIntensity(pin, 4); //4 times average flux
-	bool beloLim = (flux < BkgLimit);
 
+	return (end - start) * PERIOD_CONV;
+}
+bool Pulse::checkPulse( uint8_t interruptPin, int BkgLimit)
+{
+
+	bool beloLim = digitalRead(interruptPin);
 	//if higher than background it is a HIGH!
-	if (beloLim == true && !mark) // 21 is the background error limit by experience
+	if (beloLim == false && !mark) // 21 is the background error limit by experience
 	{
 		start = micros(); //start high
 		mark = true;
 	}
-	else if (beloLim == false && mark)
+	else if (beloLim == true && mark)
 	{
 		end = micros(); //_end high of pulse
+		tau = calculatePeriod(); //in microseconds
 		mark = false;
 	}
-
 	return !mark;
 }

@@ -25,9 +25,6 @@ public:
 	void _cleanPkg();
 	String protocolize(const char * Send, char split);
 	String getPkgValues(const char * toConvert, char split);
-	//String protocolize(const char * Send);
-	//String getPkgValues(const char * toConvert);
-	//void _cleanMsg();
 
 	unsigned int Rcvd[DIGITS]; //to fill with data,
 	String Final = "";  //the final message

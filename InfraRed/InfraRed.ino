@@ -13,15 +13,16 @@
 // the setup function runs once when you press reset or power the board
 void setup() {
 
-	Serial.begin(153600);
+	Serial.begin(128000);
 	setupSerialEvent();
 	uint8_t receiverInterruptPin = 2;
 	uint8_t analogReadPin = 14U;
 	uint8_t senderPin = 9U;
-	unsigned long bkgLimit = 100;
+	unsigned long bkgLimit = 500;
 
 	InfraRedData.configurePins(receiverInterruptPin, analogReadPin, senderPin, bkgLimit);
-	InfraRedData.begin(true);
+	bool shouldbeTrained = false;
+	InfraRedData.begin(shouldbeTrained);
 }
 
 // the loop function runs over and over again until power down or reset

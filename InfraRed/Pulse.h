@@ -6,9 +6,14 @@
 #include "WProgram.h"
 #endif
 
+#define THOUS_CONV 1e3
+#define PERIOD_CONV  2/THOUS_CONV
+
+
 class Pulse
 {
 protected:
+
 
 public:
 	uint8_t tone = 0;
@@ -24,9 +29,9 @@ public:
 	bool mark = false;
 	double tauAVG = 0; //average of tau
 
-	void readIntensity(uint8_t pin, uint8_t n);
+	void readIntensity(uint8_t analogPin, uint8_t n);
 	double calculateFrequency();
 	double calculatePeriod();
-	bool checkPulse(uint8_t pin, int BkgLimit);
+	bool checkPulse(uint8_t interruptpin, int BkgLimit);
 	//	 bool checkPulse(uint8_t pin);
 };

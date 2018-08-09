@@ -34,21 +34,7 @@ void InfraRedDataClass::_sendPkg(const char *code, uint8_t _toneDPin)
 	msg = "";
 }
 
-void InfraRedDataClass::_calculateTau()
-{
-	double aux = 0;
-	aux = _pulse->calculatePeriod(); //in microseconds
-	aux /= 1e3; //in miliseconds
 
-	_pulse->tau = aux;
-
-	double freqMultiplier = _pulse->calculateFrequency();
-	freqMultiplier /= FREQ_MULTI;
-
-	_pulse->isSame = _train(freqMultiplier);
-
-	_pulse->tone = round(freqMultiplier);
-}
 
 bool InfraRedDataClass::_train(double freqMultiplier)
 {
@@ -126,7 +112,7 @@ bool InfraRedDataClass::_compareALetter(uint8_t alphaBetIter, float freq, float 
 void InfraRedDataClass::printMsg(char c)
 {
 	_msg->Final += c;
-	bool go = (c == space || c == dot || c == enter);
+	bool go = (c == SPACE || c == DOT || c == ENTER);
 	bool length = (_msg->Final.length() > 100);
 
 	if (go || length)
@@ -135,7 +121,7 @@ void InfraRedDataClass::printMsg(char c)
 
 		_msg->_cleanMsg();
 	}
-	if (c == dot)
+	if (c == DOT)
 	{
 		Serial.println();
 		Serial.println(RCVD_MSG);
@@ -148,19 +134,29 @@ void interrupt()
 //INTERRUPT
 void InfraRedDataClass::readInterrupt() //works so great
 {
-	bool beloLim = _pulse->checkPulse(_pin.FluxPin, _pin.BkgLimit); //check if pulse finished and return a bool
 
-#if defined (FLUXDBUG)
-	Serial.print("Flux");
-	Serial.print(sep);
-	Serial.println(_pulse->flux);
-#endif
+	_pulse->readIntensity(_pin.FluxPin, 4); //4 times average flux
+
+	bool beloLim = _pulse->checkPulse( _pin.InterruptPin , _pin.BkgLimit); //check if pulse finished and return a bool
 
 	if (beloLim)
 	{
-		_calculateTau();
 
 #if defined (FLUXDBUG)
+		Serial.print("Flux");
+		Serial.print(sep);
+		Serial.println(_pulse->flux);
+#endif
+
+
+		double freqMultiplier = _pulse->calculateFrequency();
+		freqMultiplier /= FREQ_MULTI;
+
+		_pulse->isSame = _train(freqMultiplier);
+
+		_pulse->tone = round(freqMultiplier);
+
+#if defined (TAUDBUG)
 		Serial.print("Tau");
 		Serial.print(sep);
 		Serial.println(_pulse->tau);
@@ -177,7 +173,7 @@ void InfraRedDataClass::readInterrupt() //works so great
 #if defined (FLUXDBUG)
 			Serial.print("Multi");
 			Serial.print(sep);
-			Serial.println(freqMultiplier);
+			Serial.println(FREQ_MULTI);
 
 			Serial.print("Margin");
 			Serial.print(sep);
@@ -242,6 +238,7 @@ void InfraRedDataClass::configurePins(uint8_t interruptPin = 2U, uint8_t analogP
 	_pin.FluxPin = analogPin;
 	_pin.BkgLimit = bkgLimit;
 	_pin.SendPin = senderPin;
+	_pin.InterruptPin = interruptPin;
 
 	pinMode(_pin.FluxPin, INPUT);
 
@@ -293,8 +290,8 @@ void InfraRedDataClass::listen() {
 		//msgTest = false;
 	//}
 	uint8_t maxSize = 2 * DIGITS;
-	unsigned char d = enter;
-	unsigned char c = enter;
+	unsigned char d = ENTER;
+	unsigned char c = ENTER;
 	//if pacage is larger than 8
 	if (_msg->Pkg.length() >= maxSize)
 	{
