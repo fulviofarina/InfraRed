@@ -13,10 +13,10 @@ void setup() {
 	setupSerialEvent();
 	uint8_t receiverInterruptPin = 2;
 	uint8_t analogReadPin = 14U;
-	uint8_t senderPing = 9U;
+	uint8_t senderPin = 9U;
 	unsigned long bkgLimit = 100;
 
-	InfraRedData.configurePins(receiverInterruptPin, analogReadPin, senderPing, bkgLimit);
+	InfraRedData.configurePins(receiverInterruptPin, analogReadPin, senderPin, bkgLimit);
 	InfraRedData.begin(true);
 }
 
