@@ -1,10 +1,6 @@
-
 #include "Msg.h"
-
 #include "Tools.h"
-
 #include "SerialEvent.h"
-
 #include "InfraRedData.h"
 
 // the setup function runs once when you press reset or power the board
