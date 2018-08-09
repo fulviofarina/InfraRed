@@ -1,5 +1,5 @@
 <body>
-<h4>How it works </h4>
+<h1>How it works </h1>
 <p>#include "Msg.h"</p>
 <p>#include "Tools.h"</p>
 <p>#include "SerialEvent.h"</p>
