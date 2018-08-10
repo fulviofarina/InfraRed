@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ClassDiagram MajorVersion="1" MinorVersion="1">
+<ClassDiagram MajorVersion="1" MinorVersion="1" GroupingSetting="Access">
   <Class Name="InfraRedDataClass">
     <Position X="0.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AEQAEAAAQABAASggAAAAAAAQAAAABBIICAAAEAAAAEA=</HashCode>
+      <HashCode>AEQAEAAAQAAAAyggIIAAACAQACEABBIICAAABAAAAEA=</HashCode>
       <FileName>InfraRedData.h</FileName>
     </TypeIdentifier>
   </Class>

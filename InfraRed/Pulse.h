@@ -8,30 +8,35 @@
 
 #define THOUS_CONV 1e3
 #define PERIOD_CONV  2/THOUS_CONV
-
+#define FREQ_MULTI 50 //in Hz (or 50, original)
 
 class Pulse
 {
 protected:
 
+	bool mark = false;
+	uint8_t n = 1; //counter for fluxes (is it the same as nFlux?)
+
+	double tauCum = 0; //cummulative of tau
+	unsigned long fluxCum = 0; //cummulative intensity
 
 public:
 	uint8_t tone = 0;
 	bool isSame = false;
-	unsigned long  start = 0;
-	unsigned long end = 0;
-	unsigned long fluxCum = 0; //cummulative intensity
+	
 	double fluxAVG = 0; //actual average value intensity
 	unsigned long flux = 0; //last value instensity
-	uint8_t n = 1; //counter for fluxes (is it the same as nFlux?)
-	double tauCum = 0; //cummulative of tau
+	
 	double tau = 0; //tau of pulse (current?)
-	bool mark = false;
+
 	double tauAVG = 0; //average of tau
+
+	unsigned long  start = 0;
+	unsigned long end = 0;
 
 	void readIntensity(uint8_t analogPin, uint8_t n);
 	double calculateFrequency();
 	double calculatePeriod();
-	bool checkPulse(uint8_t interruptpin, int BkgLimit);
-	//	 bool checkPulse(uint8_t pin);
+	bool checkPulse(uint8_t interruptpin);
+	
 };

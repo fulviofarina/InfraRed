@@ -1,6 +1,6 @@
 
-#define separator1 '\n'
-#define separator2 '\rn'
+#define SEPARATOR_1 '\n'
+#define SEPARATOR_2 '\rn'
 
 String inputSerial = "";         // a string to hold input serial data
 bool finished = false;  // to flag if the string is complete
@@ -16,14 +16,12 @@ String loopSerialEvent()
 	// prints the strings when a carriage return or newline arrives:
 	if (finished)
 	{
-
 		finished = false;
 		msg = inputSerial;
 
 		// clear the string:
 		inputSerial = "";
 	}
-
 	return msg;
 }
 
@@ -36,6 +34,6 @@ void serialEvent()
 		// add it to the inputSerial:
 		inputSerial += aux;
 		// if the incoming character is a carriage return or newline, finish the string concatenation
-		if (aux == separator1 || aux == separator2) 	finished = true;
+		if (aux == SEPARATOR_1 || aux == SEPARATOR_2) 	finished = true;
 	}
 }

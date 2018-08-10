@@ -2,19 +2,19 @@
 #include "Msg.h"
 #include "AlphaBeta.h"
 
-bool Message::_checkTimeOut(unsigned int timeOut)
+bool Message::checkTimeOut(unsigned int timeOut)
 {
 	unsigned int diff = (micros() - LastTime);
 	bool timeout = (diff >= timeOut);
 	return timeout;
 }
-void Message::_cleanMsg()
+void Message::cleanMsg()
 {
 	Final = "";
 	LastTime = micros();
 }
 
-void Message::_cleanPkg()
+void Message::cleanPkg()
 {
 	Pkg = "";
 	LastTime = micros();

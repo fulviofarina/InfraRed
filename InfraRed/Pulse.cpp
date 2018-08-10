@@ -23,7 +23,9 @@ void Pulse::readIntensity(uint8_t pin, uint8_t cnt)
 
 double Pulse::calculateFrequency()
 {
-	return THOUS_CONV / tau;
+	//freqMultiplier /= FREQ_MULTI;
+	double aux = (THOUS_CONV / tau);
+	return aux / FREQ_MULTI;
 }
 ///In microseconds
 double Pulse::calculatePeriod()
@@ -31,7 +33,7 @@ double Pulse::calculatePeriod()
 
 	return (end - start) * PERIOD_CONV;
 }
-bool Pulse::checkPulse( uint8_t interruptPin, int BkgLimit)
+bool Pulse::checkPulse( uint8_t interruptPin)
 {
 
 	bool beloLim = digitalRead(interruptPin);

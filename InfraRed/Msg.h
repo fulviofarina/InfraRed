@@ -1,5 +1,3 @@
-// Msg.h
-
 #ifndef _MSG_h
 #define _MSG_h
 
@@ -9,9 +7,9 @@
 #include "WProgram.h"
 #endif
 
+#define TOP_MSG_LENGTH 100
 #define TIMEOUT_WORD 1e3 //Final timeOut
 #define TIMEOUT_PKG 8e4 //Pkg TimeOut
-
 #define DIGITS 4
 #define BASE 4
 
@@ -20,9 +18,10 @@ class Message
 protected:
 
 public:
-	bool _checkTimeOut(unsigned int timeOut);
-	void _cleanMsg();
-	void _cleanPkg();
+
+	bool checkTimeOut(unsigned int timeOut);
+	void cleanMsg();
+	void cleanPkg();
 	String protocolize(const char * Send, char split);
 	String getPkgValues(const char * toConvert, char split);
 
