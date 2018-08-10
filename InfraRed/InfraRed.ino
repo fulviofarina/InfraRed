@@ -12,9 +12,10 @@ void setup() {
 	Serial.begin(128000);
 
 	uint8_t receiverInterruptPin = 2;
-	uint8_t senderPin = 9U;
+	InfraRedData.configureAsReceiver(receiverInterruptPin);
 
-	InfraRedData.configurePins(receiverInterruptPin, senderPin);
+	uint8_t senderPin = 9U;
+	InfraRedData.configureAsTransmitter(senderPin);
 
 	bool shouldbeTrained = false;
 	InfraRedData.begin(shouldbeTrained);
@@ -24,6 +25,7 @@ void setup() {
 void loop() {
 
 	InfraRedData.listen();
+	InfraRedData.standBy();
 	
 }
 

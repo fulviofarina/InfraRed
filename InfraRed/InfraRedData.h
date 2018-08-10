@@ -35,7 +35,7 @@ protected:
 	Pulse *_pulse; //strcuture is in ///Util.h
 
 	int _training = -1;
-	
+	bool ended = false;
 	 ///////////////////////////////////////////////////////////////////////////
 
 	void _testAlphabet();
@@ -49,11 +49,14 @@ protected:
 	void _debug_Crypt(const char *raw, const char * toSend, unsigned char character);
 
 public:
+	void end();
+	bool standBy(uint8_t timesToTrnasmite = 1U);
 	void readInterrupt();
 	Message Msg;
 	Pulse Pulse;
 	bool sendMsg(const char * msgToSend, uint8_t times = 1U);
-	void configurePins(uint8_t interruptPin = 2U, uint8_t senderPin = 9U);
+	void configureAsTransmitter(uint8_t senderPin = 9U);
+	void configureAsReceiver(uint8_t interruptPin = 2U);
 	void begin(bool shouldBeTrained = false);
 	void listen();
 };

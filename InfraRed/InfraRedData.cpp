@@ -260,16 +260,21 @@ void interrupt()
 	InfraRedData.readInterrupt();
 }
 //1reception message print loop
-void InfraRedDataClass::configurePins(uint8_t interruptPin = 2U, uint8_t senderPin = 9U)
+void InfraRedDataClass::configureAsTransmitter(uint8_t senderPin = 9U)
 {
 	_pin.SendPin = senderPin;
+}
+void InfraRedDataClass::configureAsReceiver(uint8_t interruptPin = 2U)
+{
 	_pin.InterruptPin = interruptPin;
-
 	attachInterrupt(digitalPinToInterrupt(interruptPin), interrupt, CHANGE);
 }
 //0 - SETUP FOR SETTING UP THE INTERRUPT FOR RECEPTION
 void InfraRedDataClass::begin(bool shouldbeTrained = false)
 {
+
+	ended = false;
+
 	setupSerialEvent();
 
 	_msg = &Msg;
@@ -304,6 +309,8 @@ void InfraRedDataClass::begin(bool shouldbeTrained = false)
 
 void InfraRedDataClass::listen()
 {
+	if (ended) return;
+
 	uint8_t maxSize = 2 * DIGITS;
 	unsigned char d = ENTER;
 	unsigned char c = ENTER;
@@ -344,8 +351,21 @@ void InfraRedDataClass::listen()
 		_msg->cleanMsg();
 	}
 
+	
+}
+
+
+void InfraRedDataClass::end()
+{
+	ended = true;
+}
+
+bool InfraRedDataClass::standBy(uint8_t timesToTrnasmite = 1U )
+{
+	if (ended) return;
+
 	String msg = loopSerialEvent();
-	sendMsg(msg.c_str(), 1U);
+	sendMsg(msg.c_str(), timesToTrnasmite);
 }
 
 bool InfraRedDataClass::_sendChar(int index, const char *msg)
