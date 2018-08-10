@@ -1,8 +1,6 @@
 <body>
 <h1>How it works </h1>
-<p>#include "Msg.h"</p>
-<p>#include "Tools.h"</p>
-<p>#include "SerialEvent.h"</p>
+
 <p>#include "InfraRedData.h"</p>
 
 // the setup function runs once when you press reset or power the board
