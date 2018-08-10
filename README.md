@@ -9,15 +9,15 @@
 
 void setup() {
 
-	Serial.begin(153600);
-	setupSerialEvent();
-	uint8_t receiverInterruptPin = 2;
-	uint8_t analogReadPin = 14U;
-	uint8_t senderPin = 9U;
-	unsigned long bkgLimit = 100;
+	Serial.begin(128000);
 
-	InfraRedData.configurePins(receiverInterruptPin, analogReadPin, senderPin, bkgLimit);
-	InfraRedData.begin(true);
+	uint8_t receiverInterruptPin = 2;
+	uint8_t senderPin = 9U;
+
+	InfraRedData.configurePins(receiverInterruptPin, senderPin);
+
+	bool shouldbeTrained = false;
+	InfraRedData.begin(shouldbeTrained);
 }
 
 // the loop function runs over and over again until power down or reset
@@ -25,11 +25,6 @@ void setup() {
 void loop() {
 
 	InfraRedData.listen();
-	String msg = loopSerialEvent();
-	if (msg.compareTo("") != 0)
-	{
-		InfraRedData.sendMsg(msg.c_str(), 1U);
-	}
 }
 
 </body>
