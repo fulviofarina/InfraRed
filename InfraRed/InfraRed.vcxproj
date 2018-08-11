@@ -81,6 +81,8 @@
     <None Include="InfraRed.ino">
       <FileType>CppCode</FileType>
     </None>
+    <None Include="ReceiverCode.ino" />
+    <None Include="TransmitterCode.ino" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AlphaBeta.h" />
@@ -97,10 +99,6 @@
     <ClCompile Include="Msg.cpp" />
     <ClCompile Include="Pulse.cpp" />
     <ClCompile Include="Tools.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="IRFunciona.txt" />
-    <Text Include="IRWorking.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

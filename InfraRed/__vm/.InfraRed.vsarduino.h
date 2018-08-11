@@ -76,5 +76,7 @@ typedef void *__builtin_va_list;
 #define pgm_read_ptr(address_short)   short()
 
 #include "InfraRed.ino"
+#include "ReceiverCode.ino"
+#include "TransmitterCode.ino"
 #endif
 #endif

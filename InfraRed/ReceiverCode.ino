@@ -1,7 +1,6 @@
-/*
- Name:		InfraRed.ino
- Created:	8/8/2018 20:02:18
- Author:	Fulvio
+﻿/*
+Created:	8/8/2018 20:02:18
+Author:	Fulvio
 */
 
 #include "InfraRedData.h"
@@ -10,26 +9,20 @@
 void setup() {
 
 	Serial.begin(9600);
-
+	
 	uint8_t receiverInterruptPin = 2;
 	InfraRedData.configureAsReceiver(receiverInterruptPin);
-
-	uint8_t senderPin = 9U;
-	InfraRedData.configureAsTransmitter(senderPin);
-
-	bool shouldbeTrained = false;
-	InfraRedData.begin(shouldbeTrained);
+	
+	InfraRedData.begin();
 }
 
 // the loop function runs over and over again until power down or reset
 void loop() {
 
-	InfraRedData.standBy();
-	InfraRedData.listen();
 	
+	InfraRedData.listen();
+
 }
-
-
 
 
 

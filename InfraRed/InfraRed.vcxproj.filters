@@ -17,6 +17,8 @@
   <ItemGroup>
     <None Include="InfraRed.ino" />
     <None Include="ClassDiagram.cd" />
+    <None Include="ReceiverCode.ino" />
+    <None Include="TransmitterCode.ino" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="InfraRedData.h">
@@ -57,9 +59,5 @@
     <ClCompile Include="Pulse.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="IRFunciona.txt" />
-    <Text Include="IRWorking.txt" />
   </ItemGroup>
 </Project>
