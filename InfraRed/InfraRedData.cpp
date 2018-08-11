@@ -20,11 +20,11 @@ void InfraRedDataClass::_sendPkg(const char *code, uint8_t _toneDPin)
 		uint8_t u = 0;
 		u =abc.auxMsgRcvd.indexOf(msg[t]);
 		float au = 0;
-		au = (float)(abc.Freq[u] * FREQ_MULTI); // SET THE FREQUENCY OF EAC CHARACTER
+		au = (float)(abc.Freq[u] * _pulse->FREQ_MULTI); // SET THE FREQUENCY OF EAC CHARACTER
 		float dur = THOUS_CONV / au;
 		tone(_toneDPin, au, dur); //10
 
-		unsigned int delays = dur*THOUS_CONV*PCT_DELAY;
+		unsigned int delays = dur*THOUS_CONV*_pin.PCT_DELAY;
 		delayMicroseconds(delays);
 
 		t++;
@@ -51,7 +51,7 @@ void InfraRedDataClass::_showTrainingFinished()
 
 bool InfraRedDataClass::_train(double freqMultiplier)
 {
-	double margin = TONE_ERROR*freqMultiplier;
+	double margin = _pin.TONE_ERROR*freqMultiplier;
 
 	bool isSame = freqMultiplier <= _pulse->tone + margin;
 	isSame = isSame && freqMultiplier >= _pulse->tone - margin;
@@ -62,20 +62,7 @@ bool InfraRedDataClass::_train(double freqMultiplier)
 	//set value in library
 	abc.Freq[index] = round(freqMultiplier);
 
-	if (!isSame)
-	{
-#ifdef FLUXDBUG
-		_debug_FluxTone(margin, freqMultiplier);
-#endif // DEBUG
-
-		_training--;
-
-		//finito?
-		if (_training == 0)
-		{
-			_showTrainingFinished();
-		}
-	}
+	
 
 	return isSame;
 }
@@ -87,18 +74,18 @@ void InfraRedDataClass::_testAlphabet()
 		Serial.print(abc.Mean[i]);
 		Serial.print(SEPARATOR);
 		Serial.println(abc.Freq[i]);
-		float fr = abc.Freq[i] * FREQ_MULTI;
+		float fr = abc.Freq[i] * _pulse->FREQ_MULTI;
 		float del = THOUS_CONV / fr;
 
 		tone(_pin.SendPin, fr, del); //10
-		delay(del*PCT_DELAY);
+		delayMicroseconds(del*_pin.PCT_DELAY*THOUS_CONV);
 	}
 }
 void InfraRedDataClass::_testCode()
 {
 	String msg = "hahbhchd";
 	_sendPkg(msg.c_str(), _pin.SendPin);
-	delayMicroseconds(DELAY_CHAR);
+	delayMicroseconds(_pin.DELAY_CHAR);
 }
 void InfraRedDataClass::_debug_FluxTone(float margin, float freqMultiplier)
 {
@@ -143,7 +130,7 @@ void InfraRedDataClass::_debug_Multiplier(float margin)
 {
 	Serial.print("Multi");
 	Serial.print(SEPARATOR);
-	Serial.println(FREQ_MULTI);
+	Serial.println(_pulse->FREQ_MULTI);
 	Serial.print("Margin");
 	Serial.print(SEPARATOR);
 	Serial.println(margin);
@@ -175,7 +162,7 @@ void InfraRedDataClass::_debug_Crypt(const char *raw, const char * toSend, unsig
 bool InfraRedDataClass::_compareALetter(uint8_t alphaBetIter, float freq)
 {
 	bool ok = false;
-	float margin = freq*TONE_ERROR;
+	float margin = freq*_pin.TONE_ERROR;
 	bool higher = freq >= (abc.Freq[alphaBetIter] - margin);
 
 	if (higher)
@@ -203,7 +190,7 @@ void InfraRedDataClass::_printMsg(char c)
 {
 	_msg->Final += c;
 	bool go = (c == SPACE || c == DOT || c == ENTER);
-	bool length = (_msg->Final.length() > TOP_MSG_LENGTH);
+	bool length = (_msg->Final.length() > _msg->TOP_MSG_LENGTH);
 
 	if (go || length)
 	{
@@ -212,30 +199,44 @@ void InfraRedDataClass::_printMsg(char c)
 	}
 	if (c == DOT)
 	{
-		Serial.println();
-		Serial.println(RCVD_MSG);
+		//Serial.println();
+	//	Serial.println(RCVD_MSG);
 	}
 }
 
 //INTERRUPT
 void InfraRedDataClass::readInterrupt(void) //works so great
 {
+	//if (ended) return;
+
 	bool beloLim = _pulse->checkPulse(_pin.InterruptPin); //check if pulse finished and return a bool
 
 	if (!beloLim) return;
 
 	double freqMultiplier = _pulse->calculateFrequency();
-
+	
 	_pulse->isSame = _train(freqMultiplier);
 
 	if (_pulse->isSame) return; //not worth looking in the abc
 								//else it is worth looking...
-	//no _training
+
+
+#ifdef FLUXDBUG
+		_debug_FluxTone(margin, freqMultiplier);
+#endif // DEBUG
+
+		_training--;
+
+		//finito?
+		if (_training == 0)
+		{
+			_showTrainingFinished();
+		}
+								//just finished training, next time will enter
 	if (_training >= 0) return;
 
+
 	_pulse->tone = round(freqMultiplier);
-
-
 #if defined (FLUXDBUG)
 	_debug_Multiplier(_pulse->tone*TONE_ERROR);
 #endif
@@ -262,12 +263,16 @@ void interrupt()
 //1reception message print loop
 void InfraRedDataClass::configureAsTransmitter(uint8_t senderPin = 9U)
 {
+	_msg = &Msg;
+	_pulse = &Pulse;
 	_pin.SendPin = senderPin;
 }
 void InfraRedDataClass::configureAsReceiver(uint8_t interruptPin = 2U)
 {
+	_msg = &Msg;
+	_pulse = &Pulse;
 	_pin.InterruptPin = interruptPin;
-	attachInterrupt(digitalPinToInterrupt(interruptPin), interrupt, CHANGE);
+
 }
 //0 - SETUP FOR SETTING UP THE INTERRUPT FOR RECEPTION
 void InfraRedDataClass::begin(bool shouldbeTrained = false)
@@ -277,13 +282,9 @@ void InfraRedDataClass::begin(bool shouldbeTrained = false)
 
 	setupSerialEvent();
 
-	_msg = &Msg;
-	_pulse = &Pulse;
 
-	_msg->Final = "";
-	_msg->Pkg = "";
-	_msg->LastChar = '\0';
-	_msg->LastTime = 0;
+
+	_msg->reset();
 
 	Serial.println(TITLE);
 
@@ -304,7 +305,11 @@ void InfraRedDataClass::begin(bool shouldbeTrained = false)
 		//	msgTest = true;
 	}
 
-	Serial.println(RCVD_MSG);
+
+	attachInterrupt(digitalPinToInterrupt(_pin.InterruptPin), interrupt, CHANGE);
+
+
+	//Serial.println(RCVD_MSG);
 }
 
 void InfraRedDataClass::listen()
@@ -333,8 +338,7 @@ void InfraRedDataClass::listen()
 		_msg->Pkg.remove(0, maxSize); //CLEAR THE msgTemp
 	}
 
-	bool timeout = _msg->checkTimeOut(TIMEOUT_WORD);
-
+	bool timeout = _msg->checkTimeOut(_msg->TIMEOUT_WORD);
 	timeout = timeout && _msg->Final.length() > 1;
 	if (timeout)
 	{
@@ -342,7 +346,7 @@ void InfraRedDataClass::listen()
 	}
 	if (d != c || timeout) _printMsg(c);
 
-	timeout = _msg->checkTimeOut(TIMEOUT_PKG);
+	timeout = _msg->checkTimeOut(_msg->TIMEOUT_PKG);
 
 	if (timeout)
 	{
@@ -358,6 +362,8 @@ void InfraRedDataClass::listen()
 void InfraRedDataClass::end()
 {
 	ended = true;
+	detachInterrupt(digitalPinToInterrupt(_pin.InterruptPin));
+
 }
 
 bool InfraRedDataClass::standBy(uint8_t timesToTrnasmite = 1U )
@@ -381,7 +387,7 @@ bool InfraRedDataClass::_sendChar(int index, const char *msg)
 	toSend = _msg->protocolize(raw.c_str(), abc.split);
 	_sendPkg(toSend.c_str(), _pin.SendPin);
 
-	delayMicroseconds(DELAY_CHAR);
+	delayMicroseconds(_pin.DELAY_CHAR);
 
 #if defined (CRYPTDBUG)
 	_debug_Crypt(raw.c_str(), toSend.c_str(), character);
@@ -391,6 +397,8 @@ bool InfraRedDataClass::_sendChar(int index, const char *msg)
 //A FOR SENDING MESSAGES
 bool InfraRedDataClass::sendMsg(const char * msg, uint8_t n = 1U)
 {
+	if (ended) return;
+
 	if (((String)msg).compareTo("") == 0) return false;
 
 	bool ok = false;
@@ -401,7 +409,7 @@ bool InfraRedDataClass::sendMsg(const char * msg, uint8_t n = 1U)
 	{
 		//Serial.println("IR SND");
 		//for each letter in the message,
-		for (uint8_t j = 0; j < max; j++)
+		for (uint8_t j = 0; j <= max; j++)
 		{
 			_sendChar(j, msg);
 		}

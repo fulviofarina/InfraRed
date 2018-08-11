@@ -7,9 +7,7 @@
 #include "WProgram.h"
 #endif
 
-#define TOP_MSG_LENGTH 100
-#define TIMEOUT_WORD 1e3 //Final timeOut
-#define TIMEOUT_PKG 8e4 //Pkg TimeOut
+
 #define DIGITS 4
 #define BASE 4
 
@@ -24,13 +22,18 @@ public:
 	void cleanPkg();
 	String protocolize(const char * Send, char split);
 	String getPkgValues(const char * toConvert, char split);
-
+	void reset();
 	unsigned int Rcvd[DIGITS]; //to fill with data,
 	String Final = "";  //the final message
 	unsigned int LastTime = 0; //last time Final was cleared
 							   //auxiliar MsgRcvd for base 6
 	String Pkg = ""; //last package containing a Message char
 	char LastChar = '\0';//last character
+
+	unsigned int TOP_MSG_LENGTH = 16;
+	unsigned	int TIMEOUT_WORD = 1e5; //Final timeOut
+	unsigned	int TIMEOUT_PKG = 8e6;//Pkg TimeOut
+
 };
 
 #endif

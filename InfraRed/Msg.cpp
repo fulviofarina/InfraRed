@@ -13,7 +13,13 @@ void Message::cleanMsg()
 	Final = "";
 	LastTime = micros();
 }
-
+void Message::reset()
+{
+	Final = "";
+	Pkg = "";
+	LastChar = '\0';
+	LastTime = 0;
+}
 void Message::cleanPkg()
 {
 	Pkg = "";

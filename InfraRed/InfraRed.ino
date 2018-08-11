@@ -9,8 +9,8 @@
 // the setup function runs once when you press reset or power the board
 void setup() {
 
-	Serial.begin(128000);
-
+	Serial.begin(9600);
+//	153600
 	uint8_t receiverInterruptPin = 2;
 	InfraRedData.configureAsReceiver(receiverInterruptPin);
 
@@ -24,8 +24,10 @@ void setup() {
 // the loop function runs over and over again until power down or reset
 void loop() {
 
-	InfraRedData.listen();
+
 	InfraRedData.standBy();
+	InfraRedData.listen();
+
 	
 }
 

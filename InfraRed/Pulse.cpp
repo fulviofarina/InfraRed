@@ -47,6 +47,7 @@ bool Pulse::checkPulse( uint8_t interruptPin)
 	{
 		end = micros(); //_end high of pulse
 		tau = calculatePeriod(); //in microseconds
+	
 		mark = false;
 	}
 	return !mark;

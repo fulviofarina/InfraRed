@@ -8,7 +8,7 @@
 
 #define THOUS_CONV 1e3
 #define PERIOD_CONV  2/THOUS_CONV
-#define FREQ_MULTI 50 //in Hz (or 50, original)
+
 
 class Pulse
 {
@@ -24,6 +24,8 @@ public:
 	uint8_t tone = 0;
 	bool isSame = false;
 	
+	int FREQ_MULTI = 50; //in Hz (or 50, original)
+
 	double fluxAVG = 0; //actual average value intensity
 	unsigned long flux = 0; //last value instensity
 	
