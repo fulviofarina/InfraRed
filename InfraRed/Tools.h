@@ -11,7 +11,7 @@
 #define ENTER  '\n'
 #define DOT  '.'
 #define SPACE  ' '
-
+#define NULO '\0'
 #define SEPARATOR  " = "
 
 class ToolsClass

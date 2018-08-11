@@ -12,6 +12,9 @@ void Message::cleanMsg()
 {
 	Final = "";
 	LastTime = micros();
+
+	LastChar = '\0';
+
 }
 void Message::reset()
 {
@@ -24,6 +27,7 @@ void Message::cleanPkg()
 {
 	Pkg = "";
 	LastTime = micros();
+	LastChar = '\0';
 }
 String Message::protocolize(const char *Send, char split)
 {

@@ -11,6 +11,7 @@ void setupSerialEvent()
 	// reserves 1024 bytes for the string inputSerial:
 	inputSerial.reserve(140); // 1 TWEET or 140 characters
 }
+void(*resetFunc) (void) = 0; //declare reset function @ address 0
 
 String loopSerialEvent()
 {
@@ -22,6 +23,12 @@ String loopSerialEvent()
 		String msg =  inputSerial;
 		// clear the string:
 		inputSerial.replace(msg,"");
+		if (strstr(msg.c_str(), "<Reset>") != NULL)
+		{
+			resetFunc();
+			return;
+		}
+	
 		return msg;
 	}
 	else return "";

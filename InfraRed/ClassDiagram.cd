@@ -10,7 +10,7 @@
   <Class Name="Message" Collapsed="true">
     <Position X="7.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAJCAAEAgEBAAAAAAAAAAgAIAAAAAIAAAAAAAAAA=</HashCode>
+      <HashCode>AEAAAJCEAEAgEDAAAAAEAAAAgAIAAAAAIAAAAAAAAAA=</HashCode>
       <FileName>Msg.h</FileName>
     </TypeIdentifier>
   </Class>
@@ -20,7 +20,7 @@
       <Compartment Name="Protected" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>gAAAASACAEBAAAAjAAAAAQAAAAAAAAAUEBQAAAAAgAA=</HashCode>
+      <HashCode>hAAAASACAEBAAAAjAAAAAQAAAAAAAAAUEBQAAAAAgAA=</HashCode>
       <FileName>Pulse.h</FileName>
     </TypeIdentifier>
   </Class>
@@ -38,17 +38,10 @@
       <FileName>AlphaBeta.h</FileName>
     </TypeIdentifier>
   </Struct>
-  <Struct Name="gTempo" Collapsed="true">
-    <Position X="7.5" Y="2.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>CAAgAAAAAAAgAAAAAAAAAAAAAAQAAAAAAAAiAAAIAAA=</HashCode>
-      <FileName>Cmd.h</FileName>
-    </TypeIdentifier>
-  </Struct>
   <Struct Name="IRPreferences" Collapsed="true">
     <Position X="4.75" Y="0.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAA=</HashCode>
+      <HashCode>AACAAAAAAAAAAAAAQAAAAAAAAAAACBAAABAAAAAAAAA=</HashCode>
       <FileName>IRPreferences.h</FileName>
     </TypeIdentifier>
   </Struct>

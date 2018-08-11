@@ -84,20 +84,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AlphaBeta.h" />
-    <ClInclude Include="Cmd.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClInclude>
     <ClInclude Include="InfraRedData.h" />
     <ClInclude Include="IRPreferences.h" />
     <ClInclude Include="Msg.h" />
     <ClInclude Include="Pulse.h" />
     <ClInclude Include="SerialEvent.h" />
     <ClInclude Include="Tools.h" />
-    <ClInclude Include="Util.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClInclude>
     <ClInclude Include="__vm\.InfraRed.vsarduino.h" />
   </ItemGroup>
   <ItemGroup>

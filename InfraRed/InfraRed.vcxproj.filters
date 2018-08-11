@@ -31,13 +31,7 @@
     <ClInclude Include="__vm\.InfraRed.vsarduino.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Cmd.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Tools.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Util.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="IRPreferences.h">

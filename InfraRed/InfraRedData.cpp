@@ -8,8 +8,7 @@
 
 InfraRedDataClass InfraRedData;
 
-/////////////////////////////////////////////////////////////////
-//B Subroutine for sending code from Msg
+
 void InfraRedDataClass::_sendPkg(const char *code, uint8_t _toneDPin)
 {
 	String msg = code;
@@ -184,31 +183,28 @@ bool InfraRedDataClass::_compareALetter(uint8_t alphaBetIter, float freq)
 	return ok;
 }
 
-/////////////////////////////////////////////////////////
-// D do the storing procedure and printing
+
 void InfraRedDataClass::_printMsg(char c)
 {
 	_msg->Final += c;
 
-	bool go = (c == SPACE || c == DOT || c == ENTER);
-	bool length = (_msg->Final.length() > _msg->TOP_MSG_LENGTH);
+	//bool go = (c == SPACE || c == DOT || c == ENTER);
+//	bool length = (_msg->Final.length() > _msg->TOP_MSG_LENGTH);
 
 //	if (go || length)
-	{
+	//{
 		Serial.print(_msg->Final);
 		_msg->cleanMsg();
-	}
+	//}
 	if (c == DOT)
 	{
-		//Serial.println();
-	//	Serial.println(RCVD_MSG);
+	 //do nothing
 	}
 }
 
 //INTERRUPT
 void InfraRedDataClass::readInterrupt(void) //works so great
 {
-	//if (ended) return;
 
 	bool beloLim = _pulse->checkPulse(_pin.InterruptPin); //check if pulse finished and return a bool
 
@@ -255,13 +251,13 @@ void InfraRedDataClass::readInterrupt(void) //works so great
 		}
 	}
 }
-////////////////////////////////////////////////////////////
+
 
 void interrupt()
 {
 	InfraRedData.readInterrupt();
 }
-//1reception message print loop
+///0
 void InfraRedDataClass::configureAsTransmitter(uint8_t senderPin = 9U)
 {
 	_msg = &Msg;
@@ -275,15 +271,13 @@ void InfraRedDataClass::configureAsReceiver(uint8_t interruptPin = 2U)
 	_pin.InterruptPin = interruptPin;
 
 }
-//0 - SETUP FOR SETTING UP THE INTERRUPT FOR RECEPTION
+///1
 void InfraRedDataClass::begin(bool shouldbeTrained = false)
 {
 
 	ended = false;
 
 	setupSerialEvent();
-
-
 
 	_msg->reset();
 
@@ -303,14 +297,12 @@ void InfraRedDataClass::begin(bool shouldbeTrained = false)
 
 		delay(THOUS_CONV);
 
-		//	msgTest = true;
+		
 	}
 
 
 	attachInterrupt(digitalPinToInterrupt(_pin.InterruptPin), interrupt, CHANGE);
-
-
-	//Serial.println(RCVD_MSG);
+	
 }
 
 void InfraRedDataClass::listen()
@@ -318,43 +310,45 @@ void InfraRedDataClass::listen()
 	if (ended) return;
 
 	uint8_t maxSize = 2 * DIGITS;
-	unsigned char d = ENTER;
-	unsigned char c = ENTER;
-	//if pacage is larger than 8
+	unsigned char d = NULO;
+	unsigned char c = NULO;
+
+	//if pacage is larger than maxSize
 	if (_msg->Pkg.length() >= maxSize)
 	{
 		String aux = _msg->Pkg.substring(0, maxSize);
 
-#if defined (CRYPTDBUG)
-		_debug_CryptCode(aux.c_str());
-#endif
-		aux = _msg->getPkgValues(aux.c_str(), abc.split);
+		String aux2 = _msg->getPkgValues(aux.c_str(), abc.split);
 		const unsigned int data = ToolsClass::conversionInt(_msg->Rcvd, DIGITS, BASE);
 	
 		c = (unsigned char)data;
 
+		_msg->Pkg.remove(0, maxSize); 
+
+
 #if defined (CRYPTDBUG)
-		_debug_CryptChar(c, data, aux.c_str());
+		_debug_CryptCode(aux.c_str());
+		_debug_CryptChar(c, data, aux2.c_str());
 #endif
-		_msg->Pkg.remove(0, maxSize); //CLEAR THE msgTemp
+		
 	}
 
 	bool timeout = _msg->checkTimeOut(_msg->TIMEOUT_WORD);
 	timeout = timeout && _msg->Final.length() > 1;
 	if (timeout)
 	{
-		//Serial.println("timed out #1!");
+    	// timeout#1
 	}
 	if (d != c || timeout)
 	{
-		
 		_printMsg(c);
 	}
+
 	timeout = _msg->checkTimeOut(_msg->TIMEOUT_PKG);
 
 	if (timeout)
 	{
-		//Serial.println("timed out! #2");
+		//timout#2
 		_msg->cleanPkg();
 		_msg->cleanMsg();
 	}
