@@ -30,7 +30,7 @@ public:
 	String Pkg = ""; //last package containing a Message char
 	char LastChar = '\0';//last character
 
-	unsigned int TOP_MSG_LENGTH = 16;
+	unsigned int TOP_MSG_LENGTH = 8;
 	unsigned	int TIMEOUT_WORD = 1e5; //Final timeOut
 	unsigned	int TIMEOUT_PKG = 8e6;//Pkg TimeOut
 

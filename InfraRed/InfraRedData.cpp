@@ -189,10 +189,11 @@ bool InfraRedDataClass::_compareALetter(uint8_t alphaBetIter, float freq)
 void InfraRedDataClass::_printMsg(char c)
 {
 	_msg->Final += c;
+
 	bool go = (c == SPACE || c == DOT || c == ENTER);
 	bool length = (_msg->Final.length() > _msg->TOP_MSG_LENGTH);
 
-	if (go || length)
+//	if (go || length)
 	{
 		Serial.print(_msg->Final);
 		_msg->cleanMsg();
@@ -344,8 +345,11 @@ void InfraRedDataClass::listen()
 	{
 		//Serial.println("timed out #1!");
 	}
-	if (d != c || timeout) _printMsg(c);
-
+	if (d != c || timeout)
+	{
+		
+		_printMsg(c);
+	}
 	timeout = _msg->checkTimeOut(_msg->TIMEOUT_PKG);
 
 	if (timeout)

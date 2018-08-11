@@ -39,7 +39,9 @@ void serialEvent()
 
 	//	Serial.println(inputSerial.length());
 		// if the incoming character is a carriage return or newline, finish the string concatenation
+	
 		if (aux == SEPARATOR_1 || aux == SEPARATOR_2 || aux == SEPARATOR_3)
+	//	if (inputSerial.length() > 0)
 		{
 			finished = true;
 		}

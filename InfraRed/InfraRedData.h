@@ -7,8 +7,6 @@
 #include "WProgram.h"
 #endif
 
-#define TITLE "\n\nInfraRed Data Transmission Program\n"
-#define RCVD_MSG  "\nIR RCVD:\n"
 
 #include "IRPreferences.h"
 #include "Pulse.h"
@@ -17,6 +15,11 @@
 //#define FLUXDBUG 1 //VAL
 //#define TAUDBUG 1 // TAU AVG
 //#define CRYPTDBUG 1 //Crypto
+
+
+#define TITLE "\nInfraRed Data Transmission Program\n"
+//#define RCVD_MSG  "\nIR RCVD:\n"
+
 
 class InfraRedDataClass
 {
